@@ -4,10 +4,10 @@ const {authMiddleware, permissionCheck} = require('../middleware/authMiddleware'
 const router = express.Router();
 
 router.post('/users', authMiddleware, permissionCheck('user.create'), userController.createUser);
-router.get('/users', userController.getAllUsers);
-router.get('/users/:userId', userController.getUserById);
-router.patch('/users/:userId', userController.updateUser);
-router.delete('/users/:userId', userController.deleteUser);
+router.get('/users', authMiddleware, permissionCheck('user.list'), userController.getAllUsers);
+router.get('/users/:userId', authMiddleware, permissionCheck('user.view'), userController.getUserById);
+router.patch('/users/:userId', authMiddleware, permissionCheck('user.update'), userController.updateUser);
+router.delete('/users/:userId', authMiddleware, permissionCheck('user.delete'), userController.deleteUser);
 
 // PUT /api/users/:userId/role
 // router.put('/users/:userId/role', [authMiddleware, adminMiddleware], async (req, res) => {
