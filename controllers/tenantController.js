@@ -21,7 +21,7 @@ exports.getAllTenants = async (req, res) => {
 
 exports.getTenantById = async (req, res) => {
   try {
-    const tenant = await Tenant.findOne({ tenantId: req.params.tenantId });
+    const tenant = await Tenant.findOne({ _id: req.params.tenantId });
     if (!tenant) {
       return res.status(404).send();
     }
@@ -33,7 +33,7 @@ exports.getTenantById = async (req, res) => {
 
 exports.updateTenant = async (req, res) => {
   try {
-    const tenant = await Tenant.findOneAndUpdate({ tenantId: req.params.tenantId }, req.body, { new: true, runValidators: true });
+    const tenant = await Tenant.findOneAndUpdate({ _id: req.params.tenantId }, req.body, { new: true, runValidators: true });
     if (!tenant) {
       return res.status(404).send();
     }
@@ -45,7 +45,7 @@ exports.updateTenant = async (req, res) => {
 
 exports.deleteTenant = async (req, res) => {
   try {
-    const tenant = await Tenant.findOneAndDelete({ tenantId: req.params.tenantId });
+    const tenant = await Tenant.findOneAndDelete({ _id: req.params.tenantId });
     if (!tenant) {
       return res.status(404).send();
     }

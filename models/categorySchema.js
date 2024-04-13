@@ -1,16 +1,6 @@
 const mongoose = require('mongoose');
 
-const categorySchema = new mongoose.Schema({
-  categoryId: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  tenantId: {
-    type: String,
-    required: true,
-    index: true  // Facilitates queries filtered by tenantId
-  },
+const categorySchema = new mongoose.Schema({ 
   name: {
     type: String,
     required: true
@@ -19,6 +9,9 @@ const categorySchema = new mongoose.Schema({
   parentCategoryId: {
     type: String,
     default: null  // Allows for nesting categories
+  },
+  tenantId: {
+    type: mongoose.Schema.Types.ObjectId, ref: 'Tenant'
   },
   createdAt: {
     type: Date,

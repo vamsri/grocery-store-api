@@ -1,28 +1,19 @@
 const mongoose = require('mongoose');
 
-const tenantSchema = new mongoose.Schema({
-  tenantId: {
-    type: String,
-    required: true,
-    unique: true,
-    default: 'tenant-001'
-  },
+const tenantSchema = new mongoose.Schema({ 
   name: {
     type: String,
-    required: true,
-    default: 'Acme Corp'
+    required: true
   },
   domain: {
     type: String,
     required: true,
-    unique: true,
-    default: "www.example.com"
+    unique: true
   },
   clientID: {
     type: String,
     required: true,
-    unique: true,
-    default: 'Client-001'
+    unique: true
   },
   metadata: {
     // Optional field to store additional information about the tenant

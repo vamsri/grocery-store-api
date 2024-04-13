@@ -1,40 +1,32 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
-const userSchema = new mongoose.Schema({
-  userId: {
-    type: String,
-    required: true,
-    unique: true,
-    default: 'user-001'
-  },
-  tenantId: {
-    type: String,
-    required: true,
-    index: true,
-    default: 'tenant-001'
-  },
+const userSchema = new mongoose.Schema({ 
   username: {
     type: String,
-    required: true,
-    unique: true
+    unique: true,
+    required: true    
   },
   email: {
     type: String,
     required: true,
-    unique: true,
     lowercase: true
   },
   passwordHash: {
     type: String,
     required: true
-  },
+  }, 
   roles:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Role' }],
   profileInfo: {
     firstName: String,
     lastName: String,
     phone: String,
     // Add additional profile fields as necessary
+  },
+  tenantId: {
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Tenant',
+    required: true
   },
   createdAt: {
     type: Date,
@@ -45,6 +37,8 @@ const userSchema = new mongoose.Schema({
     default: Date.now
   }
 });
+
+userSchema.index({ email: 1, tenantId: 1 }, { unique: true });
 
 // Pre-save hook to hash password before saving if it's new or has been changed
 userSchema.pre('save', async function(next) {

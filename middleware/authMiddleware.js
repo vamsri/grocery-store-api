@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/userSchema');
 const Role = require('../models/roleSchema');
 
-const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret';
 
 // Middleware to verify token and attach user to request
 const authMiddleware = async (req, res, next) => {
@@ -35,8 +35,10 @@ const permissionCheck = (requiredPermission) => {
       permissions = [...permissions, ...role.permissions];
     });
 
+    console.log('permissions->', permissions);
     const hasPermission = permissions.includes(requiredPermission);
 
+    console.log('hasPermission->', requiredPermission, hasPermission)
     if (!hasPermission) {
       return res.status(403).send('Insufficient permissions');
     }
