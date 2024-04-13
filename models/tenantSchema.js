@@ -1,12 +1,6 @@
 const mongoose = require('mongoose');
 
-const tenantSchema = new mongoose.Schema({
-  tenantId: {
-    type: String,
-    required: true,
-    unique: true,
-    default: 'tenant-001'
-  },
+const tenantSchema = new mongoose.Schema({ 
   name: {
     type: String,
     required: true,

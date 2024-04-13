@@ -2,7 +2,9 @@ const Tenant = require('../models/tenantSchema');
 
 exports.createTenant = async (req, res) => {
   try {
+    console.log('req.body');
     const tenant = new Tenant(req.body);
+    console.log(tenant)
     await tenant.save();
     res.status(201).send(tenant);
   } catch (error) {

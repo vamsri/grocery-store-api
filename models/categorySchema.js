@@ -1,15 +1,8 @@
 const mongoose = require('mongoose');
 
 const categorySchema = new mongoose.Schema({
-  categoryId: {
-    type: String,
-    required: true,
-    unique: true
-  },
   tenantId: {
-    type: String,
-    required: true,
-    index: true  // Facilitates queries filtered by tenantId
+    type: mongoose.Schema.Types.ObjectId, ref: 'Tenant'
   },
   name: {
     type: String,
