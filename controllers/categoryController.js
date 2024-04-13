@@ -15,7 +15,11 @@ exports.createCategory = async (req, res) => {
 
 exports.getCategories = async (req, res) => {
   try {
-    const categories = await Category.find({});
+    const tenantId = req.headers['x-tenant-id'];
+    if (!tenantId) {
+      return res.status(400).send('Tenant ID is required');
+  }
+    const categories = await Category.find({tenantId: tenantId});
     res.send(categories);
   } catch (error) {
     res.status(500).send(error);
