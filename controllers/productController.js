@@ -2,7 +2,16 @@ const Product = require('../models/productSchema');
 
 exports.createProduct = async (req, res) => {
   try {
-    const product = new Product(req.body);
+    const {name, description, price, categories, inventoryCount, images} = req.body;
+    const tenantId = req.headers["x-tenant-id"];
+
+    const configParams = {
+      name, description, price, categories, inventoryCount, images, tenantId
+    };
+
+    console.log('configParams->', configParams);
+    
+    const product = new Product(configParams);
     await product.save();
     res.status(201).send(product);
   } catch (error) {

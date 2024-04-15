@@ -30,14 +30,10 @@ const orderSchema = new mongoose.Schema({
     enum: ['pending', 'processing', 'shipped', 'delivered', 'cancelled'],
     default: 'pending'
   },
-  createdAt: {
-    type: Date,
-    default: Date.now
+  tenantId: {
+    type: mongoose.Schema.Types.ObjectId, ref: 'Tenant'
   },
-  updatedAt: {
-    type: Date,
-    default: Date.now
-  },
+
   paymentDetails: {
     method: String,
     transactionId: String,
@@ -50,7 +46,15 @@ const orderSchema = new mongoose.Schema({
     postalCode: String,
     country: String,
     // Tracking details or additional shipping information can be added here
-  }
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now
+  },
 });
 
 const Order = mongoose.model('Order', orderSchema);

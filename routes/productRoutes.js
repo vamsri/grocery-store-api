@@ -1,5 +1,7 @@
 const express = require('express');
 const productController = require('../controllers/productController');
+const {authMiddleware, permissionCheck} = require('../middleware/authMiddleware');
+
 const router = express.Router();
 
 router.post('/products', authMiddleware, permissionCheck('product.create'), productController.createProduct);
