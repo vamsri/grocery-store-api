@@ -1,4 +1,5 @@
 const Product = require('../models/productSchema');
+const cloudinary = require('cloudinary').v2;
 
 exports.createProduct = async (req, res) => {
   try {
@@ -47,7 +48,9 @@ exports.getProductById = async (req, res) => {
 
 exports.updateProduct = async (req, res) => {
   try {
-    const product = await Product.findOneAndUpdate({ productId: req.params.productId }, req.body, { new: true, runValidators: true });
+    const {productId} = req.params;
+    const product = await Product.findOneAndUpdate({ productId: productId }, req.body, { new: true, runValidators: true });
+    
     if (!product) {
       return res.status(404).send();
     }
@@ -66,5 +69,26 @@ exports.deleteProduct = async (req, res) => {
     res.send(product);
   } catch (error) {
     res.status(500).send(error);
+  }
+};
+
+exports.updateImage = async (req, res) => {
+  try {
+    cloudinary.config({
+      cloud_name: process.env.CLOUD_NAME,
+      api_key: process.env.API_KEY,
+      api_secret: process.env.API_SECRET
+    });
+    const result = await cloudinary.uploader.upload(req.file.path);
+    const product = await Product.findOneAndUpdate({ productId: req.params.prodId }, {images: [result.secure_url]}, { new: true, runValidators: true });
+
+    if (!product) {
+      return res.status(404).send();
+    }
+
+    res.send(product);
+  } catch (err) {
+    console.error("Failed to upload image:", err);
+    res.status(500).send('Failed to upload image');
   }
 };
