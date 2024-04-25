@@ -49,5 +49,5 @@ app.use(authRoutes);
 // app.use(forgotPassword);
 // app.use(resetPassword);
 
-const port = process.env.PORT || 4001;
+const port = process.env.PORT || 4002;
 app.listen(port, () => console.log(`Listening on port ${port}...`));

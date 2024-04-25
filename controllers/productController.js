@@ -75,12 +75,17 @@ exports.deleteProduct = async (req, res) => {
 exports.updateImage = async (req, res) => {
   try {
     cloudinary.config({
-      cloud_name: process.env.CLOUD_NAME,
-      api_key: process.env.API_KEY,
-      api_secret: process.env.API_SECRET
+      cloud_name: process.env.cloudinaryName,
+      api_key: process.env.cloudinaryNameApiKey,
+      api_secret: process.env.cloudinaryApiSecret
     });
-    const result = await cloudinary.uploader.upload(req.file.path);
-    const product = await Product.findOneAndUpdate({ productId: req.params.prodId }, {images: [result.secure_url]}, { new: true, runValidators: true });
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: req.file.destination,
+      public_id: req.file.filename,  
+      resource_type: 'image'
+    });
+    console.log('result->', result, req.params.prodId)
+    const product = await Product.findOneAndUpdate({ _id: req.params.prodId }, {images: result.secure_url}, { new: true, runValidators: true });
 
     if (!product) {
       return res.status(404).send();
