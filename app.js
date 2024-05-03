@@ -9,11 +9,13 @@ const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes'); // adjust the path as necessary
 const orderRoutes = require('./routes/orderRoutes'); // adjust the path as necessary
 const categoryRoutes = require('./routes/categoryRoutes'); // Adjust the path as necessary
+const swaggerUi = require('swagger-ui-express');
 
 // const sendMail = require('./utils/sendMail');
 // const forgotPassword = require('./utils/forgotPassword');
 // const resetPassword = require('./utils/resetPassword');
 const authRoutes = require('./routes/authRoutes');
+const swaggerDocs = require('./swagger');
 
 const app = express();
 app.use(express.json());
@@ -37,6 +39,10 @@ app.use(helmet());
 app.use(cors({
   origin: 'http://localhost:3000'
 }));
+
+// Swagger setup
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
 // User registration
 app.use('/api', tenantRoutes);
 app.use('/api', userRoutes);

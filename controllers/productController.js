@@ -20,7 +20,7 @@ exports.createProduct = async (req, res) => {
   }
 };
 
-exports.getProducts = async (req, res) => {
+exports.getProductsByCategory = async (req, res) => {
   try {
     const {catId} = req.params;
     const tenantId = req.headers['x-tenant-id'];
@@ -28,6 +28,20 @@ exports.getProducts = async (req, res) => {
       return res.status(400).send('Tenant ID is required');
     }
     const products = await Product.find({tenantId, categories : catId});
+    res.send(products);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
+exports.getProducts = async (req, res) => {
+  try {
+    const {catId} = req.params;
+    const tenantId = req.headers['x-tenant-id'];
+    if (!tenantId) {
+      return res.status(400).send('Tenant ID is required');
+    }
+    const products = await Product.find({tenantId});
     res.send(products);
   } catch (error) {
     res.status(500).send(error);

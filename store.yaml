@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs-app-deployment
+spec:
+  replicas: 3  # Number of pods to run
+  selector:
+    matchLabels:
+      app: nodejs-app
+  template:
+    metadata:
+      labels:
+        app: nodejs-app
+    spec:
+      containers:
+      - name: nodejs-app
+        image: <your-image-name>  # Replace with your Docker image name
+        ports:
+        - containerPort: 3000  # Port the container is listening on
+        resources:
+          limits:
+            cpu: "1"
+            memory: "500Mi"
+          requests:
+            cpu: "0.5"
+            memory: "200Mi"
+        readinessProbe:
+          httpGet:
+            path: /  # Adjust if your app has a specific health check path
+            port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /  # Adjust if your app has a specific health check path
+            port: 3000
+          initialDelaySeconds: 15
+          periodSeconds: 20
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodejs-app-service
+spec:
+  type: LoadBalancer  # Use NodePort or ClusterIP if not using a cloud provider that supports LoadBalancers
+  ports:
+  - port: 3000
+    targetPort: 3000
+  selector:
+    app: nodejs-app
