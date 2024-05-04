@@ -29,7 +29,8 @@ exports.getCategories = async (req, res) => {
 
 exports.getCategoryById = async (req, res) => {
   try {
-    const category = await Category.findOne({ categoryId: req.params.catId });
+    console.log('cat id->', req.params.catId);
+    const category = await Category.findOne({ _id: req.params.catId });
     if (!category) {
       return res.status(404).send();
     }
