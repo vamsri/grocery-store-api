@@ -9,11 +9,13 @@ const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes'); // adjust the path as necessary
 const orderRoutes = require('./routes/orderRoutes'); // adjust the path as necessary
 const categoryRoutes = require('./routes/categoryRoutes'); // Adjust the path as necessary
+const swaggerUi = require('swagger-ui-express');
 
 // const sendMail = require('./utils/sendMail');
 // const forgotPassword = require('./utils/forgotPassword');
 // const resetPassword = require('./utils/resetPassword');
 const authRoutes = require('./routes/authRoutes');
+const swaggerDocs = require('./swagger');
 
 const app = express();
 app.use(express.json());
@@ -35,8 +37,12 @@ mongoose.connect('mongodb://127.0.0.1:27017/store-dev')
 app.use(limiter);
 app.use(helmet());
 app.use(cors({
-  origin: 'http://localhost:3000'
+  origin: ['http://localhost:3001', 'http://localhost:3000']
 }));
+
+// Swagger setup
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
 // User registration
 app.use('/api', tenantRoutes);
 app.use('/api', userRoutes);
@@ -49,5 +55,5 @@ app.use(authRoutes);
 // app.use(forgotPassword);
 // app.use(resetPassword);
 
-const port = process.env.PORT || 4001;
+const port = process.env.PORT || 4002;
 app.listen(port, () => console.log(`Listening on port ${port}...`));

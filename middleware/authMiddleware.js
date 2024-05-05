@@ -35,10 +35,8 @@ const permissionCheck = (requiredPermission) => {
       permissions = [...permissions, ...role.permissions];
     });
 
-    console.log('permissions->', permissions);
     const hasPermission = permissions.includes(requiredPermission);
 
-    console.log('hasPermission->', requiredPermission, hasPermission)
     if (!hasPermission) {
       return res.status(403).send('Insufficient permissions');
     }

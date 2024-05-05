@@ -1,11 +1,6 @@
 const mongoose = require('mongoose');
 
-const productSchema = new mongoose.Schema({
-  tenantId: {
-    type: String,
-    required: true,
-    index: true  // Facilitates efficient queries filtered by tenantId
-  },
+const productSchema = new mongoose.Schema({ 
   name: {
     type: String,
     required: true
@@ -22,6 +17,9 @@ const productSchema = new mongoose.Schema({
     min: [0, 'Inventory count cannot be negative']
   },
   images: [String],  // URLs to product images
+  tenantId: {
+    type: mongoose.Schema.Types.ObjectId, ref: 'Tenant'
+  },
   createdAt: {
     type: Date,
     default: Date.now

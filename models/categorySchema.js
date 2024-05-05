@@ -10,6 +10,7 @@ const categorySchema = new mongoose.Schema({
     type: String,
     default: null  // Allows for nesting categories
   },
+  images: [String],  // URLs to product images
   tenantId: {
     type: mongoose.Schema.Types.ObjectId, ref: 'Tenant'
   },

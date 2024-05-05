@@ -1,8 +1,17 @@
 const Product = require('../models/productSchema');
+const cloudinary = require('cloudinary').v2;
 
 exports.createProduct = async (req, res) => {
   try {
-    const product = new Product(req.body);
+    const {name, description, price, categories, inventoryCount, images} = req.body;
+    const tenantId = req.headers["x-tenant-id"];
+
+    const configParams = {
+      name, description, price, categories, inventoryCount, images, tenantId
+    };
+
+    
+    const product = new Product(configParams);
     await product.save();
     res.status(201).send(product);
   } catch (error) {
@@ -10,9 +19,28 @@ exports.createProduct = async (req, res) => {
   }
 };
 
+exports.getProductsByCategory = async (req, res) => {
+  try {
+    const {catId} = req.params;
+    const tenantId = req.headers['x-tenant-id'];
+    if (!tenantId) {
+      return res.status(400).send('Tenant ID is required');
+    }
+    const products = await Product.findOne({tenantId, categories : catId});
+    res.send(products);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
 exports.getProducts = async (req, res) => {
   try {
-    const products = await Product.find({});
+    const {catId} = req.params;
+    const tenantId = req.headers['x-tenant-id'];
+    if (!tenantId) {
+      return res.status(400).send('Tenant ID is required');
+    }
+    const products = await Product.find({tenantId});
     res.send(products);
   } catch (error) {
     res.status(500).send(error);
@@ -21,7 +49,7 @@ exports.getProducts = async (req, res) => {
 
 exports.getProductById = async (req, res) => {
   try {
-    const product = await Product.findOne({ productId: req.params.productId });
+    const product = await Product.findOne({ _id: req.params.prodId });
     if (!product) {
       return res.status(404).send();
     }
@@ -33,7 +61,9 @@ exports.getProductById = async (req, res) => {
 
 exports.updateProduct = async (req, res) => {
   try {
-    const product = await Product.findOneAndUpdate({ productId: req.params.productId }, req.body, { new: true, runValidators: true });
+    const {prodId} = req.params;
+    const product = await Product.findOneAndUpdate({ _id: prodId }, req.body, { new: true, runValidators: true });
+    
     if (!product) {
       return res.status(404).send();
     }
@@ -45,12 +75,37 @@ exports.updateProduct = async (req, res) => {
 
 exports.deleteProduct = async (req, res) => {
   try {
-    const product = await Product.findOneAndDelete({ productId: req.params.productId });
+    const product = await Product.findOneAndDelete({ _id: req.params.prodId });
     if (!product) {
       return res.status(404).send();
     }
     res.send(product);
   } catch (error) {
     res.status(500).send(error);
+  }
+};
+
+exports.updateImage = async (req, res) => {
+  try {
+    cloudinary.config({
+      cloud_name: process.env.cloudinaryName,
+      api_key: process.env.cloudinaryNameApiKey,
+      api_secret: process.env.cloudinaryApiSecret
+    });
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: req.file.destination,
+      public_id: req.file.filename,  
+      resource_type: 'image'
+    });
+    const product = await Product.findOneAndUpdate({ _id: req.params.prodId }, {images: result.secure_url}, { new: true, runValidators: true });
+
+    if (!product) {
+      return res.status(404).send();
+    }
+
+    res.send(product);
+  } catch (err) {
+    console.error("Failed to upload image:", err);
+    res.status(500).send('Failed to upload image');
   }
 };

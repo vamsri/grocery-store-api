@@ -42,7 +42,6 @@ exports.login = async (req, res) => {
     if (!user || !(await user.comparePassword(password))) {
       return res.status(401).send({ error: 'Login failed!' });
     }
-    console.log('USER->', user);
     const token = jwt.sign({ userId: user._id, username: user.username, email: user.email, tenantId: user.tenantId }, JWT_SECRET);
     res.send({ user, token });
   } catch (error) {
