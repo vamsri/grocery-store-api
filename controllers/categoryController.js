@@ -29,7 +29,6 @@ exports.getCategories = async (req, res) => {
 
 exports.getCategoryById = async (req, res) => {
   try {
-    console.log('cat id->', req.params.catId);
     const category = await Category.findOne({ _id: req.params.catId });
     if (!category) {
       return res.status(404).send();
@@ -76,7 +75,6 @@ exports.updateImage = async (req, res) => {
       public_id: req.file.filename,  
       resource_type: 'image'
     });
-    console.log('result->', result, req.params.catId)
     const category = await Category.findOneAndUpdate({ _id: req.params.catId }, {images: result.secure_url}, { new: true, runValidators: true });
 
     if (!category) {

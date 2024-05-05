@@ -10,7 +10,6 @@ exports.createProduct = async (req, res) => {
       name, description, price, categories, inventoryCount, images, tenantId
     };
 
-    console.log('configParams->', configParams);
     
     const product = new Product(configParams);
     await product.save();
@@ -98,7 +97,6 @@ exports.updateImage = async (req, res) => {
       public_id: req.file.filename,  
       resource_type: 'image'
     });
-    console.log('result->', result, req.params.prodId)
     const product = await Product.findOneAndUpdate({ _id: req.params.prodId }, {images: result.secure_url}, { new: true, runValidators: true });
 
     if (!product) {
