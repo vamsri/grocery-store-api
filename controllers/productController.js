@@ -50,7 +50,7 @@ exports.getProducts = async (req, res) => {
 
 exports.getProductById = async (req, res) => {
   try {
-    const product = await Product.findOne({ productId: req.params.productId });
+    const product = await Product.findOne({ _id: req.params.prodId });
     if (!product) {
       return res.status(404).send();
     }
@@ -62,8 +62,8 @@ exports.getProductById = async (req, res) => {
 
 exports.updateProduct = async (req, res) => {
   try {
-    const {productId} = req.params;
-    const product = await Product.findOneAndUpdate({ productId: productId }, req.body, { new: true, runValidators: true });
+    const {prodId} = req.params;
+    const product = await Product.findOneAndUpdate({ _id: prodId }, req.body, { new: true, runValidators: true });
     
     if (!product) {
       return res.status(404).send();
@@ -76,7 +76,7 @@ exports.updateProduct = async (req, res) => {
 
 exports.deleteProduct = async (req, res) => {
   try {
-    const product = await Product.findOneAndDelete({ productId: req.params.productId });
+    const product = await Product.findOneAndDelete({ _id: req.params.prodId });
     if (!product) {
       return res.status(404).send();
     }

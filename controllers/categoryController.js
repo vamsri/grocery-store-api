@@ -42,7 +42,7 @@ exports.getCategoryById = async (req, res) => {
 
 exports.updateCategory = async (req, res) => {
   try {
-    const category = await Category.findOneAndUpdate({ categoryId: req.params.catId }, req.body, { new: true });
+    const category = await Category.findOneAndUpdate({ _id: req.params.catId }, req.body, { new: true });
     if (!category) {
       return res.status(404).send();
     }
@@ -54,7 +54,7 @@ exports.updateCategory = async (req, res) => {
 
 exports.deleteCategory = async (req, res) => {
   try {
-    const category = await Category.findOneAndDelete({ categoryId: req.params.catId });
+    const category = await Category.findOneAndDelete({ _id: req.params.catId });
     if (!category) {
       return res.status(404).send();
     }
