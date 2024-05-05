@@ -22,12 +22,12 @@ exports.createProduct = async (req, res) => {
 
 exports.getProductsByCategory = async (req, res) => {
   try {
-    const {prodId} = req.params;
+    const {catId} = req.params;
     const tenantId = req.headers['x-tenant-id'];
     if (!tenantId) {
       return res.status(400).send('Tenant ID is required');
     }
-    const products = await Product.findOne({tenantId, _id : prodId});
+    const products = await Product.findOne({tenantId, categories : catId});
     res.send(products);
   } catch (error) {
     res.status(500).send(error);

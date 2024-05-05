@@ -37,7 +37,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/store-dev')
 app.use(limiter);
 app.use(helmet());
 app.use(cors({
-  origin: 'http://localhost:3000'
+  origin: ['http://localhost:3001', 'http://localhost:3000']
 }));
 
 // Swagger setup
