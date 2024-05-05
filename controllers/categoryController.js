@@ -5,8 +5,7 @@ const cloudinary = require('cloudinary').v2;
 exports.createCategory = async (req, res) => {
   try {
     const category = new Category(req.body);
-    const platformTenant = await Tenant.findOne({ "domain": req.body.domain });
-    category.tenantId = platformTenant._id;
+    category.tenantId = req.headers["x-tenant-id"];
     await category.save();
     res.status(201).send(category);
   } catch (error) {
