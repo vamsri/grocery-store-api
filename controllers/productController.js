@@ -47,6 +47,19 @@ exports.getProducts = async (req, res) => {
   }
 };
 
+exports.getProductDetails = async(req, res) => {
+  try {
+    const tenantId = req.headers['x-tenant-id'];
+    if (!tenantId) {
+      return res.status(400).send('Tenant ID is required');
+    }
+    const products = await Product.find({_id: req.params.prodId});
+    res.send(products);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
 exports.getProductById = async (req, res) => {
   try {
     const product = await Product.findOne({ _id: req.params.prodId });
