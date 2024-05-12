@@ -1,4 +1,5 @@
 const Tenant = require('../models/tenantSchema');
+const Address = require('../models/tenant/address');
 
 exports.createTenant = async (req, res) => {
   try {
@@ -6,6 +7,23 @@ exports.createTenant = async (req, res) => {
     await tenant.save();
     res.status(201).send(tenant);
   } catch (error) {
+    res.status(400).send(error);
+  }
+};
+
+exports.tenantAddress = async (req, res) => {
+  try {
+    const address = new Address(req.body);
+    await address.save();
+
+    await Tenant.findOneAndUpdate(
+      { _id: req.params.tenantId },
+      { $set: { address: address._id } },
+      { new: true }
+    );
+    res.status(201).send(address);
+  } catch (error) {
+    console.log('error->', error);
     res.status(400).send(error);
   }
 };

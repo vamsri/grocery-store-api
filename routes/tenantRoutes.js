@@ -9,4 +9,10 @@ router.get('/tenants/:tenantId', authMiddleware, permissionCheck('tenant.view'),
 router.patch('/tenants/:tenantId', authMiddleware, permissionCheck('tenant.update'), tenantController.updateTenant);
 router.delete('/tenants/:tenantId', authMiddleware, permissionCheck('tenant.delete'), tenantController.deleteTenant);
 
+router.post('/tenant/:tenantId/address', authMiddleware, permissionCheck('tenant.create'), tenantController.tenantAddress);
+// router.post('/tenant/:tenantId/contact', authMiddleware, permissionCheck('tenant.create'), tenantController.tenantContact);
+// router.post('/tenant/:tenantId/branding', authMiddleware, permissionCheck('tenant.create'), tenantController.tenantBranding);
+// router.post('/tenant/:tenantId/financial', authMiddleware, permissionCheck('tenant.create'), tenantController.tenantFinancial);
+// router.post('/tenant/:tenantId/operational', authMiddleware, permissionCheck('tenant.create'), tenantController.tenantOperational);
+
 module.exports = router;

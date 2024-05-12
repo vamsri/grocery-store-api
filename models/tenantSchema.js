@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const tenantSchema = new mongoose.Schema({ 
   name: {
@@ -15,6 +16,17 @@ const tenantSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
+  logo_url: {
+    type: String,
+  },
+  cover_image_url: {
+    type: String
+  },
+  address: { type: Schema.Types.ObjectId, ref: 'Address' },
+  contact_details: { type: Schema.Types.ObjectId, ref: 'ContactDetails' },
+  branding_details: { type: Schema.Types.ObjectId, ref: 'BrandingDetails' },
+  operational_data: { type: Schema.Types.ObjectId, ref: 'OperationalDetails' },
+  financial_info: { type: Schema.Types.ObjectId, ref: 'FinancialInfo' },
   metadata: {
     // Optional field to store additional information about the tenant
     address: String,
