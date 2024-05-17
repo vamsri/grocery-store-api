@@ -36,12 +36,11 @@ mongoose.connect('mongodb://127.0.0.1:27017/store-dev')
 
 app.use(limiter);
 app.use(helmet());
-app.use(cors({
-  origin: ['http://localhost:3001', 'http://localhost:3000']
-}));
+app.use(cors({}));
 
 // Swagger setup
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use('/api/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use('/api', authRoutes);
 
 // User registration
 app.use('/api', tenantRoutes);
@@ -49,7 +48,6 @@ app.use('/api', userRoutes);
 app.use('/api', productRoutes);
 app.use('/api', orderRoutes);
 app.use('/api', categoryRoutes);
-app.use(authRoutes);
 
 // app.use(sendMail);
 // app.use(forgotPassword);
