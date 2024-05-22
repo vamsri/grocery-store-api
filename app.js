@@ -53,5 +53,5 @@ app.use('/api', categoryRoutes);
 // app.use(forgotPassword);
 // app.use(resetPassword);
 
-const port = process.env.PORT || 4002;
+const port = process.env.PORT || 4001;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
