@@ -57,7 +57,7 @@ root/
 
 1. **Clone the repository:**
    ```
-   git clone https://github.com/your-username/nodejs-backend-api.git
+   git clone https://github.com/vamsri/grocery-store-api
    cd nodejs-backend-api
    ```
 
